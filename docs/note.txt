@@ -1,0 +1,26 @@
+EventData: {
+   EventID: 4311,
+   Message: Current firmware version: 021.26.2.031, Manufacturer: FPC
+ }
+EventData: {
+   EventID: 4317,
+   Message: Device init success, Manufacturer: FPC
+ }
+EventData: {
+   EventID: 4324,
+   Message: TLS init success, Manufacturer: FPC
+ }
+EventData: {
+   EventID: 4504,
+   Message: [Identify] Result: Matched, CaptureTime: 110ms, CompareTime: 31ms, Algo_ret:1, Score:138, Quality: 57, Coverage: 100, recordCount: 1, , Manufacturer: FPC
+ }
+EventData: {
+   EventID: 4505,
+   Message: Engine: Template update result, update fid 0x17b72a03, Manufacturer: FPC
+ }
+
+umdf/fpc_disum.dll
+umdf/fpc_evtprovider.dll
+bio/fpc_enclave.dll
+bio/fpcdisumengine.dll
+bio/fpcsessionservice.exe

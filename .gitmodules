@@ -1,0 +1,18 @@
+[submodule "libs/asyncusb"]
+	path = libs/asyncusb
+	url = git@git.vro.life:pom/asyncusb.git
+[submodule "libs/asyncdbus"]
+	path = libs/asyncdbus
+	url = git@git.vro.life:pom/asyncdbus.git
+[submodule "libs/jinx"]
+	path = libs/jinx
+	url = git@git.vro.life:pom/jinx.git
+[submodule "asyncdbus"]
+	path = asyncdbus
+	url = git@git.vro.life:pom/asyncdbus.git
+[submodule "asyncusb"]
+	path = asyncusb
+	url = git@git.vro.life:pom/asyncusb.git
+[submodule "jinx"]
+	path = jinx
+	url = git@git.vro.life:pom/jinx.git

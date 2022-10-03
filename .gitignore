@@ -1,0 +1,8 @@
+.vscode
+venv
+.ipynb*
+build
+out
+FPC
+*.pcapng
+*.data
