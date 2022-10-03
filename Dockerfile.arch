@@ -1,0 +1,4 @@
+FROM docker.io/library/archlinux
+
+RUN pacman --noconfirm -Syyu && \
+    pacman --noconfirm -S libusb libevent libdbus openssl libopencv-dev make cmake pkg-config gcc

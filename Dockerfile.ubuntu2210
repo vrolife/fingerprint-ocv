@@ -1,0 +1,8 @@
+FROM ubuntu:22.10
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN sed -i 's|archive.ubuntu.com|mirrors.vro.life|g' /etc/apt/sources.list && \
+    sed -i 's|security.ubuntu.com|mirrors.vro.life|g' /etc/apt/sources.list && \
+    apt update && \
+    apt install -y --no-install-recommends libusb-1.0-0-dev libevent-dev libdbus-1-dev libssl-dev libopencv-dev make cmake pkg-config gcc g++
