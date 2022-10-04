@@ -21,6 +21,6 @@ cmake --build build
 cp build/src/fingerprint-ocv /path/to/somewhere
 ```
 
-## Binary
+## Install && Binary
 
 [Link](https://github.com/vrolife/modern_laptop/tree/main/drivers/fingerprint)
