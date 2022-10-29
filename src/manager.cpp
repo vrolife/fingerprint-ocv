@@ -90,9 +90,9 @@ protected:
 };
 
 static std::mutex _usb_device_lock{};
-static USBDevice* _usb_devices{nullptr};
+static USBDeviceInfo* _usb_devices{nullptr};
 
-void Manager::add_usb_device(USBDevice* device)
+void Manager::add_usb_device(USBDeviceInfo* device)
 {
     std::lock_guard<std::mutex> lock{_usb_device_lock};
 
@@ -113,7 +113,9 @@ int Manager::hotplug_callback(libusb_context* ctx, libusb_device* device, libusb
         if (dev->_vendor == desc.idVendor and dev->_product == desc.idProduct) {
             syslog(LOG_INFO | LOG_AUTH, "usb hotplug: %s: %hx %hx", 
                 event == LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED ? "arrived" : "left", desc.idVendor, desc.idProduct);
-            dev->_callback(manager, device, &desc, event == LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED);
+            if (not dev->_attached) {
+                dev->_callback(manager, dev, device, &desc, event == LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED);
+            }
         }
         dev = dev->_next;
     }

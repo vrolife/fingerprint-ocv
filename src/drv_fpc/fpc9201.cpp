@@ -94,7 +94,7 @@ struct FPCEvent
     std::vector<FPCBuffer> _buffers{};
 };
 
-static void start(fingerpp::Manager* manager, USBDeviceHandle&& handle);
+static void start(fingerpp::Manager* manager, fingerpp::USBDeviceInfo* info, USBDeviceHandle&& handle);
 
 static
 cv::Mat load_data_and_proc(const std::vector<unsigned char>& pixels)
@@ -1446,6 +1446,7 @@ protected:
 class WorkerControl : public AsyncRoutine 
 {
     fingerpp::Manager* _manager{};
+    fingerpp::USBDeviceInfo* _device_info{};
     USBDeviceHandle _handle;
     libusb_interface_descriptor _interface{};
     libusb_endpoint_descriptor _endpoint;
@@ -1469,11 +1470,14 @@ class WorkerControl : public AsyncRoutine
 public:
     WorkerControl& operator ()(
         fingerpp::Manager* manager,
+        fingerpp::USBDeviceInfo* info,
         USBDeviceHandle&& handle) 
     {
         _manager = manager;
+        _device_info = info;
         _handle = std::move(handle);
         _ready = false;
+        _device_info->_attached = true;
         async_start(&WorkerControl::init);
         return *this;
     }
@@ -1510,6 +1514,8 @@ protected:
         _event_queue.reset();
         _image_queue.reset();
 
+        _device_info->_attached = false;
+
         if (_device_task != nullptr) {
             async_cancel(_device_task) >> JINX_IGNORE_RESULT;
             _device_task.reset();
@@ -1540,7 +1546,7 @@ protected:
 
         auto ret = libusb_open(device, handle.address());
         if (ret == 0) {
-            fpc9201::start(_manager, std::move(handle));
+            fpc9201::start(_manager, _device_info, std::move(handle));
         }
     }
 
@@ -1917,21 +1923,21 @@ protected:
     }
 };
 
-static void start(fingerpp::Manager* manager, USBDeviceHandle&& handle)
+static void start(fingerpp::Manager* manager, fingerpp::USBDeviceInfo* info, USBDeviceHandle&& handle)
 {
-    manager->get_loop().task_new<WorkerControl>(manager, std::move(handle));
+    manager->get_loop().task_new<WorkerControl>(manager, info, std::move(handle));
 }
 
-static void device_attached(fingerpp::Manager* manager, libusb_device* device, libusb_device_descriptor* desc, bool connected)
+static void device_attached(fingerpp::Manager* manager, fingerpp::USBDeviceInfo* info, libusb_device* device, libusb_device_descriptor* desc, bool connected)
 {
     if (connected) {
         USBDeviceHandle handle{};
         libusb_open(device, handle.address());
-        start(manager, std::move(handle));
+        start(manager, info, std::move(handle));
     }
 }
 
-static fingerpp::USBDevice _device {
+static fingerpp::USBDeviceInfo _device {
     ._vendor = 0x10a5,
     ._product = 0x9201,
     ._callback = device_attached

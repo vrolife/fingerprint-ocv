@@ -33,14 +33,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 namespace fingerpp {
 
 class Manager;
+struct USBDeviceInfo;
 
-typedef void (*USBHotplugCallback)(Manager *, libusb_device* device, libusb_device_descriptor* desc, bool connected);
+typedef void (*USBHotplugCallback)(Manager *, USBDeviceInfo* dev_info, libusb_device* device, libusb_device_descriptor* desc, bool connected);
 
-struct USBDevice {
+struct USBDeviceInfo {
     uint16_t _vendor{0};
     uint16_t _product{0};
     USBHotplugCallback _callback{nullptr};
-    USBDevice* _next{nullptr};
+    bool _attached{false};
+    USBDeviceInfo* _next{nullptr};
 };
 
 class Manager {
@@ -105,7 +107,7 @@ public:
 
     static int hotplug_callback(libusb_context* ctx, libusb_device* device, libusb_hotplug_event event, void* data);
 
-    static void add_usb_device(USBDevice* device);
+    static void add_usb_device(USBDeviceInfo* device);
 };
 
 }
