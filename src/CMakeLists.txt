@@ -14,6 +14,7 @@ if (DEFINED ENV{OPENCV_SDK_HOME})
 set(OpenCV_DIR $ENV{OPENCV_SDK_HOME}/lib/cmake/opencv4)
 endif()
 
+set(OpenCV_DIR "${CMAKE_CURRENT_BINARY_DIR}/vcpkg_installed/x64-linux/share/opencv4")
 find_package(OpenCV REQUIRED)
 
 add_library(cvext STATIC cvext.cpp)

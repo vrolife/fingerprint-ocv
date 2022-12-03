@@ -7,3 +7,7 @@
 [submodule "jinx"]
 	path = jinx
 	url = ../jinx.git
+[submodule "vcpkg"]
+	path = vcpkg
+	url = git@github.com:microsoft/vcpkg.git
+	branch = 2022.10.19

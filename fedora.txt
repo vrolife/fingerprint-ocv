@@ -1,0 +1,1 @@
+podman run --rm -it --userns keep-id -v `pwd`:/data -v /run/user/1000/:/run/user/1000/ -v /dev/bus:/dev/bus -e XDG_RUNTIME_DIR=/run/user/1000 fedora_driver bash -l
