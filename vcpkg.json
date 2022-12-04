@@ -4,10 +4,7 @@
     "version-string": "1.0.0",
     "license": "BSD-2-Clause",
     "dependencies": [
-        "openssl",
         "libevent",
-        "libusb",
-        "dbus",
         {
             "name": "opencv4",
             "default-features": false

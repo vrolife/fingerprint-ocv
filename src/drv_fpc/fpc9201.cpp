@@ -1933,6 +1933,10 @@ static void device_attached(fingerpp::Manager* manager, fingerpp::USBDeviceInfo*
     if (connected) {
         USBDeviceHandle handle{};
         libusb_open(device, handle.address());
+        if (handle == nullptr) {
+            std::cerr << "Unable open device " << std::hex << info->_vendor << ":" << info->_product;
+            abort();
+        }
         start(manager, info, std::move(handle));
     }
 }

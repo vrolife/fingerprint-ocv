@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 #include <openssl/bio.h>
 #include <openssl/ssl.h>
+#include <openssl/err.h>
 
 #include "jinx/openssl/openssl.hpp"
 
@@ -33,7 +34,13 @@ BIOPipe::BIOPipe()
 {
     _bio_server.initialize().abort_on(Failed_, "faield to create BIO");
 
-    OpenSSLContext context_server{SSL_CTX_new(TLS_server_method())};    
+    OpenSSLContext context_server{SSL_CTX_new(TLS_server_method())};  
+
+    if (context_server == nullptr) {
+        ERR_print_errors_fp(stderr);
+        abort();
+    }
+
     SSL_CTX_set_options(context_server, SSL_OP_NO_COMPRESSION);
     SSL_CTX_use_psk_identity_hint(context_server, nullptr);
     SSL_CTX_set_psk_server_callback(context_server, psk_server_cb);
